@@ -1,0 +1,45 @@
+{
+  "extends": "./src/.umi/tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext", // ECMAScript 目标版本
+    "module": "esnext", // 指定生成的模块系统
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true, // 从tslib导入辅助工具，如__extends, __rest
+    "noImplicitAny": false, // 强制类型检验
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowSyntheticDefaultImports": true, // 允许从没有设置默认导出的模块中默认导入（仅为了类型检查，不影响代码输出）
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@@/*": [
+        "./src/.umi/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "externals.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
