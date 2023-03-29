@@ -1,5 +1,6 @@
 import { defineConfig } from '@umijs/max';
-
+import { routes } from './config/route'
+import { config } from './config/config';
 export default defineConfig({
   antd: {},
   access: {},
@@ -9,26 +10,14 @@ export default defineConfig({
   layout: {
     title: '@umijs/max',
   },
-  routes: [
-    {
-      path: '/',
-      redirect: '/home',
-    },
-    {
-      name: '首页',
-      path: '/home',
-      component: './Home',
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
-    },
-    {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table',
-    },
-  ],
-  npmClient: 'pnpm'
+  routes: routes,
+  npmClient: 'pnpm',
+  proxy: {
+    '/api': {
+      'target': 'http://px.dev.chinahuatong.com.cn:55000',
+      'changeOrigin': true,
+      'pathRewrite': { '^/api': '' },
+    }
+  },
+  ...config
 });
