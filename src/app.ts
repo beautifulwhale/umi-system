@@ -44,7 +44,6 @@ interface ResponseStructure {
 }
 // 错误处理
 const errorHandler = (error: any) => {
-  // const [api] = notification.useNotification()
   const { response } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
