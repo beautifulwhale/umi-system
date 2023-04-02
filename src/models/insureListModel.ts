@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { InsureCategoryItem } from "@/services/insureCategories/type";
-import { getInsuranceCategories } from "@/services/insureCategories";
+import { getInsuranceCategories } from "@/services";
 
 export default function InsureList() {
     const [insureList, setInsureList] = useState<InsureCategoryItem[]>([])
@@ -12,6 +12,6 @@ export default function InsureList() {
                 setInsureList(data!);
             }
         });
-    })
+    }, [])
     return { insureList, setInsureList }
 }

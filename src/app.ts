@@ -65,7 +65,6 @@ export const request: RequestConfig = {
   timeout: DEFAULT_REQUEST_TIMEOUT_TIME,
   headers: {
     Authorization: token ? `Bearer ${token}` : '',
-    'Content-Type': 'application/x-www-form-urlencoded',
   },
   errorConfig: {
     errorHandler
