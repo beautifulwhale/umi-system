@@ -15,14 +15,25 @@ import {
 import { InsureCategoryItem } from '@/services/insureCategories/type';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import BreadcrumbCpn from '@/layout/breadcrumb';
-import { getSubjectList, updateSubjectItem } from '@/services';
-import { SubjectForm, SubjectListItemData } from '@/services/subjectList/type';
+import {
+	getSubjectList,
+	getSubjectTypeList,
+	updateSubjectItem,
+} from '@/services';
+import {
+	SubjectForm,
+	SubjectListItemData,
+	SubjectTypeListParams,
+} from '@/services/subjectList/type';
 import { patchString } from '@/utils';
 import { ColumnsType } from 'antd/es/table';
+import OperateDialog from './components/operateDialog';
+import { Antd } from 'typings';
 
 const Subject: React.FC = () => {
 	const [form] = Form.useForm();
 	const [messageApi, contextHolder] = message.useMessage();
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const breadcrumbItems = [
 		{
 			title: (
@@ -50,6 +61,9 @@ const Subject: React.FC = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [subjectList, setSubjectList] = useState<SubjectListItemData[]>([]);
 	const [total, setTotal] = useState(0);
+	const [sourceMetaSchemaList, setSourceMetaSchemaList] = useState<
+		Antd.Select[]
+	>([]);
 	// 启用、禁用
 	const handleChangeStatus = (isChecked: boolean, id: string) => {
 		const updateParams = { status: isChecked ? 'T' : 'F', id };
@@ -118,7 +132,8 @@ const Subject: React.FC = () => {
 			value: insure.id,
 		};
 	});
-	useEffect(() => {
+	// 获取标的列表
+	const handleGetSubjectList = () => {
 		const combineParams = { params: subjectParams, ...pageInfo };
 		setLoading(true);
 		getSubjectList(combineParams).then(({ data, code }) => {
@@ -128,6 +143,9 @@ const Subject: React.FC = () => {
 				setLoading(false);
 			}
 		});
+	};
+	useEffect(() => {
+		handleGetSubjectList();
 	}, [subjectParams, pageInfo]);
 	const onFinish = (values: SubjectForm) => {
 		patchString(values);
@@ -147,7 +165,25 @@ const Subject: React.FC = () => {
 		setPageInfo(pageInfo);
 	};
 	// 新增弹窗
-	const onAppend = () => {};
+	const onAppend = () => {
+		const typeParams: SubjectTypeListParams = {
+			pageNo: 1,
+			pageSize: 100,
+			params: {
+				label: '',
+				status: 'T',
+				type: 'subject',
+			},
+		};
+		getSubjectTypeList(typeParams).then(({ data }) => {
+			const mapTypeSchemaList = data?.data.map((item) => ({
+				label: item.label,
+				value: item.id,
+			}));
+			setSourceMetaSchemaList(mapTypeSchemaList!);
+		});
+		setIsModalOpen(true);
+	};
 	return (
 		<>
 			{contextHolder}
@@ -194,6 +230,7 @@ const Subject: React.FC = () => {
 				columns={columns}
 				dataSource={subjectList}
 				loading={loading}
+				rowKey={(record) => record.id}
 				pagination={{
 					total,
 					pageSize: pageInfo.pageSize,
@@ -203,6 +240,12 @@ const Subject: React.FC = () => {
 					pageSizeOptions: [5, 10, 20, 50],
 				}}
 			></Table>
+			<OperateDialog
+				isModalOpen={isModalOpen}
+				sourceMetaSchemaList={sourceMetaSchemaList}
+				setIsModalOpen={(isModalOpen: boolean) => setIsModalOpen(isModalOpen)}
+				handleGetSubjectList={handleGetSubjectList}
+			></OperateDialog>
 		</>
 	);
 };
