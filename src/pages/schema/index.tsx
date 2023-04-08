@@ -34,6 +34,7 @@ const Subject: React.FC = () => {
 	const [form] = Form.useForm();
 	const [messageApi, contextHolder] = message.useMessage();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [initialValue, setInitalValue] = useState<SubjectListItemData>();
 	const breadcrumbItems = [
 		{
 			title: (
@@ -76,6 +77,29 @@ const Subject: React.FC = () => {
 			}
 		});
 	};
+	// 新增、编辑弹窗
+	const onAppendOrEdit = (record?: SubjectListItemData) => {
+		const typeParams: SubjectTypeListParams = {
+			pageNo: 1,
+			pageSize: 100,
+			params: {
+				label: '',
+				status: 'T',
+				type: 'subject',
+			},
+		};
+		getSubjectTypeList(typeParams).then(({ data }) => {
+			const mapTypeSchemaList = data?.data.map((item) => ({
+				label: item.label,
+				value: item.id,
+			}));
+			setSourceMetaSchemaList(mapTypeSchemaList!);
+		});
+		if (record) {
+			setInitalValue(record);
+		}
+		setIsModalOpen(true);
+	};
 	const columns: ColumnsType<SubjectListItemData> = [
 		{
 			title: '标的组件',
@@ -117,7 +141,7 @@ const Subject: React.FC = () => {
 					>
 						组件管理
 					</a>
-					<a>编辑</a>
+					<a onClick={() => onAppendOrEdit(record)}>编辑</a>
 				</Space>
 			),
 		},
@@ -164,26 +188,6 @@ const Subject: React.FC = () => {
 		const pageInfo = { pageNo: 1, pageSize: 10 };
 		setPageInfo(pageInfo);
 	};
-	// 新增弹窗
-	const onAppend = () => {
-		const typeParams: SubjectTypeListParams = {
-			pageNo: 1,
-			pageSize: 100,
-			params: {
-				label: '',
-				status: 'T',
-				type: 'subject',
-			},
-		};
-		getSubjectTypeList(typeParams).then(({ data }) => {
-			const mapTypeSchemaList = data?.data.map((item) => ({
-				label: item.label,
-				value: item.id,
-			}));
-			setSourceMetaSchemaList(mapTypeSchemaList!);
-		});
-		setIsModalOpen(true);
-	};
 	return (
 		<>
 			{contextHolder}
@@ -218,7 +222,11 @@ const Subject: React.FC = () => {
 								<Button htmlType="button" onClick={onReset}>
 									重置
 								</Button>
-								<Button type="primary" htmlType="button" onClick={onAppend}>
+								<Button
+									type="primary"
+									htmlType="button"
+									onClick={() => onAppendOrEdit()}
+								>
 									新增
 								</Button>
 							</Space>
@@ -243,7 +251,9 @@ const Subject: React.FC = () => {
 			<OperateDialog
 				isModalOpen={isModalOpen}
 				sourceMetaSchemaList={sourceMetaSchemaList}
+				initialValue={initialValue!}
 				setIsModalOpen={(isModalOpen: boolean) => setIsModalOpen(isModalOpen)}
+				setInitalValue={setInitalValue}
 				handleGetSubjectList={handleGetSubjectList}
 			></OperateDialog>
 		</>

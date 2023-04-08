@@ -1,9 +1,12 @@
 import { saveSubjectInfoMessage } from '@/services';
 import { InsureCategoryItem } from '@/services/insureCategories/type';
-import { SubjectSaveParams } from '@/services/subjectList/type';
+import {
+	SubjectListItemData,
+	SubjectSaveParams,
+} from '@/services/subjectList/type';
 import { useModel } from '@umijs/max';
 import { Button, Form, Input, message, Modal, Select } from 'antd';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Antd } from 'typings';
 
 interface DialogProps {
@@ -11,30 +14,39 @@ interface DialogProps {
 	sourceMetaSchemaList: Antd.Select[];
 	setIsModalOpen: (isModalOpen: boolean) => void;
 	handleGetSubjectList: () => void;
+	initialValue: SubjectListItemData;
+	setInitalValue: (initialValue: any) => void;
 }
 const EditOrAppendDialog: React.FC<DialogProps> = ({
 	isModalOpen,
 	setIsModalOpen,
 	sourceMetaSchemaList,
 	handleGetSubjectList,
+	initialValue,
+	setInitalValue,
 }) => {
 	const [form] = Form.useForm();
+	const formRef = useRef(null);
 	const [messageApi, contextHolder] = message.useMessage();
+	const [operateFlag, setOperateFlag] = useState('');
 	const { TextArea } = Input;
 	const handleCancel = () => {
 		setIsModalOpen(false);
 		form.resetFields();
+		setInitalValue(null);
 	};
 	const handleOk = () => {
 		form.validateFields().then((values) => {
 			const combineParams: SubjectSaveParams = {
 				...values,
-				id: -1,
+				id: operateFlag === 'editType' ? initialValue.id : -1,
 				status: 'F',
 			};
 			saveSubjectInfoMessage(combineParams).then(({ code }) => {
 				if (code === 200) {
-					messageApi.success('新增成功');
+					messageApi.success(
+						`${operateFlag === 'editType' ? '编辑成功' : '新增成功'}`,
+					);
 					handleGetSubjectList();
 					handleCancel();
 					setIsModalOpen(false);
@@ -42,6 +54,21 @@ const EditOrAppendDialog: React.FC<DialogProps> = ({
 			});
 		});
 	};
+	useEffect(() => {
+		if (formRef.current) {
+			if (initialValue) {
+				const initForm = {
+					label: initialValue.label,
+					code: initialValue.code,
+					riskId: initialValue.riskId,
+					sourceMetaSchemaId: initialValue.sourceMetaSchemaId,
+					description: initialValue.description,
+				};
+				form.setFieldsValue(initForm);
+				setOperateFlag('editType');
+			}
+		}
+	}, [form, initialValue]);
 	// 险类列表
 	const { insureList } = useModel('insureListModel', (model) => ({
 		insureList: model.insureList,
@@ -70,7 +97,7 @@ const EditOrAppendDialog: React.FC<DialogProps> = ({
 				onOk={handleOk}
 				onCancel={handleCancel}
 			>
-				<Form form={form} name="subjectForm">
+				<Form form={form} name="subjectForm" ref={formRef}>
 					<Form.Item
 						label="险类名称"
 						name="riskId"
