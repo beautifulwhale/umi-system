@@ -1,4 +1,4 @@
-import { useModel } from '@umijs/max';
+import { useModel, useNavigate } from '@umijs/max';
 import { useEffect, useState } from 'react';
 import {
 	Button,
@@ -31,6 +31,7 @@ import OperateDialog from './components/operateDialog';
 import { Antd } from 'typings';
 
 const Subject: React.FC = () => {
+	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [messageApi, contextHolder] = message.useMessage();
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -100,6 +101,19 @@ const Subject: React.FC = () => {
 		}
 		setIsModalOpen(true);
 	};
+	// 组件管理
+	const componentManger = (record: SubjectListItemData) => {
+		// params 参数
+		// navigate(`/schema/manger/${record.metaSchemaId}/${record.id}`);
+		// search 参数
+		navigate(
+			`/schema/manger?metaSchemaId=${record.metaSchemaId}&id=${record.id}&label=${record.label}`,
+		);
+		// state 参数
+		// navigate('/schema/manger', {
+		// 	state: { metaSchemaId: record.metaSchemaId, id: record.id },
+		// });
+	};
 	const columns: ColumnsType<SubjectListItemData> = [
 		{
 			title: '标的组件',
@@ -134,13 +148,7 @@ const Subject: React.FC = () => {
 			key: 'action',
 			render: (_, record) => (
 				<Space size="middle">
-					<a
-						onClick={() => {
-							console.log('record,', record);
-						}}
-					>
-						组件管理
-					</a>
+					<a onClick={() => componentManger(record)}>组件管理</a>
 					<a onClick={() => onAppendOrEdit(record)}>编辑</a>
 				</Space>
 			),

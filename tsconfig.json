@@ -38,7 +38,9 @@
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "externals.d.ts",
-    "typings.d.ts"
+    "typings.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
   ],
   "exclude": [
     "node_modules"
