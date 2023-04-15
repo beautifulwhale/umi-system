@@ -41,4 +41,10 @@ export const routes = [
 			},
 		],
 	},
+	{
+		name: 'style测试',
+		path: '/style',
+		component: './testStyle',
+		extra: true,
+	},
 ];
