@@ -1,4 +1,4 @@
-import { useModel, useNavigate } from '@umijs/max';
+import { useModel, useNavigate, useRouteData, useRouteProps } from '@umijs/max';
 import { useEffect, useState } from 'react';
 import {
 	Button,
@@ -31,6 +31,7 @@ import OperateDialog from './components/operateDialog';
 import { Antd } from 'typings';
 
 const Subject: React.FC = () => {
+	console.log('--->', useRouteData(), useRouteProps()    );
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [messageApi, contextHolder] = message.useMessage();
