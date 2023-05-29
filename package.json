@@ -1,16 +1,15 @@
 {
   "private": true,
-  "author": "lyh <1928999500@qq.com>",
+  "author": "trash",
   "scripts": {
-    "dev": "max dev",
-    "development": "cross-env UMI_ENV=dev max dev",
-    "uat": "cross-env UMI_ENV=uat max build",
-    "build": "max build",
+    "dev": "cross-env UMI_ENV=dev max dev",
+    "uat": "cross-env UMI_ENV=uat max dev",
+    "test": "cross-env UMI_ENV=test max dev",
+    "build": "cross-env UMI_ENV=prod max build",
     "format": "prettier --cache --write .",
     "prepare": "husky install",
     "postinstall": "max setup",
-    "setup": "max setup",
-    "start": "npm run dev"
+    "setup": "max setup"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
