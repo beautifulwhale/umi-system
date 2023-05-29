@@ -2,7 +2,7 @@
   "private": true,
   "author": "trash",
   "scripts": {
-    "dev": "cross-env UMI_ENV=dev max dev",
+    "dev": "cross-env UMI_ENV=dev max dev --open",
     "uat": "cross-env UMI_ENV=uat max dev",
     "test": "cross-env UMI_ENV=test max dev",
     "build": "cross-env UMI_ENV=prod max build",

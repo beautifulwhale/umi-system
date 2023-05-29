@@ -47,4 +47,10 @@ export const routes = [
 		component: './testStyle',
 		extra: true,
 	},
+	{
+		name: '用户管理',
+		path: '/system/auth/user/list',
+		extra: true,
+		component: './User'
+	}
 ];
