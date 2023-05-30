@@ -1,0 +1,29 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('@/assets/img/background.jpg');
+  background-size: contain;
+  // animation: fadeAnimation 5s infinite;
+  @keyframes fadeAnimation {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.8;
+    }
+  }
+  .login {
+    width: 600px;
+    height: 400px;
+    .loginBtn {
+      width: 100%;
+      background-color: blue !important;
+    }
+  }
+}

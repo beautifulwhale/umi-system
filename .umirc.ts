@@ -2,7 +2,7 @@ import { defineConfig } from '@umijs/max';
 import { routes } from './config/route';
 import { config } from './config/config';
 export default defineConfig({
-	base: '/haha',
+	base: '',
 	codeSplitting: {
 		jsStrategy: 'granularChunks',
 	},

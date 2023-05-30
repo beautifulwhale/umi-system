@@ -1,5 +1,10 @@
 export const routes = [
 	{
+		path: '/login',
+		component: './Login',
+		layout: false
+	},
+	{
 		path: '/',
 		redirect: '/home',
 		extra: true,
@@ -51,6 +56,6 @@ export const routes = [
 		name: '用户管理',
 		path: '/system/auth/user/list',
 		extra: true,
-		component: './User'
-	}
+		component: './User',
+	},
 ];

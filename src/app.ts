@@ -15,7 +15,7 @@ export const layout: RunTimeLayoutConfig = () => {
     menu: {
       locale: true
     },
-    title: "一起来过圣诞夜",
+    title: "There is a girl named Siyu",
   };
 };
 
