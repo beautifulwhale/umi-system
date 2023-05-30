@@ -1,6 +1,6 @@
 import { RunTimeLayoutConfig } from '@umijs/max';
 
-import { AxiosResponse, RequestConfig } from '@umijs/max'
+import { RequestConfig } from '@umijs/max'
 import { notification } from 'antd';
 // 运行时配置
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
@@ -34,14 +34,14 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。'
 }
-interface ResponseStructure {
-  success?: boolean;
-  code: number;
-  data: any;
-  errorCode?: number;
-  errorMessage?: string;
-  stackTrace?: null
-}
+// interface ResponseStructure {
+//   success?: boolean;
+//   code: number;
+//   data: any;
+//   errorCode?: number;
+//   errorMessage?: string;
+//   stackTrace?: null
+// }
 // 错误处理
 const errorHandler = (error: any) => {
   const { response } = error;
@@ -76,12 +76,12 @@ export const request: RequestConfig = {
   ],
   responseInterceptors: [
     (response) => {
-      const { data } = response as AxiosResponse<ResponseStructure>;
-      if (data.code !== 200) {
-        notification.error({
-          message: '请求失败'
-        });
-      }
+      // const { data } = response as AxiosResponse<ResponseStructure>;
+      // if (data.code !== 200) {
+      //   notification.error({
+      //     message: '请求失败'
+      //   });
+      // }
       return response;
     }
   ]

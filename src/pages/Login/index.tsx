@@ -1,13 +1,39 @@
-import React from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import React, { useEffect, useState } from 'react';
+import {
+	LockOutlined,
+	UserOutlined,
+	VerifiedOutlined,
+} from '@ant-design/icons';
+import { Button, Checkbox, Col, Form, Input, Row, message } from 'antd';
 import styles from './index.less';
+import { captcha, login } from '@/services/login';
 
 const Login: React.FC = () => {
-  const loginClassName = `login-name ${styles.login}`
-	const onFinish = (values: any) => {
+	const loginClassName = `login-name ${styles.login}`;
+	const [captchaUrl, setCaptchaUrl] = useState('');
+	const [verifyKey, setVerifyKey] = useState('');
+	const onFinish = async (values: any) => {
 		console.log('Received values of form: ', values);
+		const params = Object.assign(values, { verifyKey });
+		const res = await login(params);
+    if(res.code === 50) {
+      message.warning(res.message)
+    } else {
+      message.success('登录成功')
+    }
+		console.log('res==', res);
 	};
+
+	const getNewCaptcha = () => {
+		captcha().then((res) => {
+			console.log('res', res);
+			setCaptchaUrl(res.data.img);
+			setVerifyKey(res.data.key);
+		});
+	};
+	useEffect(() => {
+		getNewCaptcha();
+	}, []);
 
 	return (
 		<div className={styles.content}>
@@ -36,8 +62,23 @@ const Login: React.FC = () => {
 						placeholder="Password"
 					/>
 				</Form.Item>
+				<Form.Item name="verifyCode">
+					<Row>
+						<Col span={18}>
+							<Input prefix={<VerifiedOutlined />} placeholder="请输入验证码" />
+						</Col>
+						<Col span={4} offset={2}>
+							<img
+								src={captchaUrl}
+								width={130}
+								height={40}
+								onClick={getNewCaptcha}
+							/>
+						</Col>
+					</Row>
+				</Form.Item>
 				<Form.Item>
-					<Form.Item name="remember" valuePropName="checked" noStyle>
+					<Form.Item valuePropName="checked" noStyle>
 						<Checkbox>Remember me</Checkbox>
 					</Form.Item>
 
@@ -47,11 +88,7 @@ const Login: React.FC = () => {
 				</Form.Item>
 
 				<Form.Item>
-					<Button
-						type="primary"
-						htmlType="submit"
-						className={styles.loginBtn}
-					>
+					<Button type="primary" htmlType="submit" className={styles.loginBtn}>
 						Log in
 					</Button>
 					Or <a href="">register now!</a>
