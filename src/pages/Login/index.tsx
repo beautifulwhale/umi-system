@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from '@umijs/max';
 import {
 	LockOutlined,
 	UserOutlined,
@@ -8,25 +9,36 @@ import { Button, Checkbox, Col, Form, Input, Row, message } from 'antd';
 import styles from './index.less';
 import { captcha, login } from '@/services/login';
 
-const Login: React.FC = () => {
+// dva user连接
+const Login: React.FC<any> = ({ dispatch }) => {
 	const loginClassName = `login-name ${styles.login}`;
 	const [captchaUrl, setCaptchaUrl] = useState('');
 	const [verifyKey, setVerifyKey] = useState('');
 	const onFinish = async (values: any) => {
-		console.log('Received values of form: ', values);
 		const params = Object.assign(values, { verifyKey });
 		const res = await login(params);
-    if(res.code === 50) {
-      message.warning(res.message)
-    } else {
-      message.success('登录成功')
-    }
+		if (res.code === 50) {
+			message.warning(res.message);
+		} else {
+			message.success('登录成功');
+		}
+		dispatch({
+			type: 'user/getUserInfo',
+			payload: res.data.userInfo,
+		});
+		dispatch({
+			type: 'user/getToken',
+			payload: res.data.token,
+		});
+		dispatch({
+			type: 'user/getMenuList',
+			payload: res.data.menuList,
+		});
 		console.log('res==', res);
 	};
 
 	const getNewCaptcha = () => {
 		captcha().then((res) => {
-			console.log('res', res);
 			setCaptchaUrl(res.data.img);
 			setVerifyKey(res.data.key);
 		});
@@ -98,4 +110,4 @@ const Login: React.FC = () => {
 	);
 };
 
-export default Login;
+export default connect(({ user }) => ({ user }))(Login);

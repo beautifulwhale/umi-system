@@ -34,14 +34,6 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。'
 }
-// interface ResponseStructure {
-//   success?: boolean;
-//   code: number;
-//   data: any;
-//   errorCode?: number;
-//   errorMessage?: string;
-//   stackTrace?: null
-// }
 // 错误处理
 const errorHandler = (error: any) => {
   const { response } = error;

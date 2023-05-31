@@ -19,11 +19,13 @@
     "@dnd-kit/utilities": "^3.2.1",
     "@umijs/max": "^4.0.62",
     "antd": "^5.0.0",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "dva-model-extend": "^0.1.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@umijs/plugin-dva": "^0.13.2",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
