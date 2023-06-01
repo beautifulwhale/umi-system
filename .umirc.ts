@@ -1,7 +1,6 @@
 import { defineConfig } from '@umijs/max';
 import { routes } from './config/route';
 import { config } from './config/config';
-import user from './src/store/user';
 
 export default defineConfig({
 	base: '/',
@@ -26,13 +25,4 @@ export default defineConfig({
 		skipModelValidate: true,
 	},
 	icons: { autoInstall: {} },
-	// extraModels: [user],
-	// plugins: [
-	// 	[
-	// 		'@umijs/plugin-dva',
-	// 		{
-	// 			models: [require('./src/store/user').default],
-	// 		},
-	// 	],
-	// ],
 });

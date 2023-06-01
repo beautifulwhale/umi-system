@@ -1,42 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from '@umijs/max';
+import { connect, useNavigate } from '@umijs/max';
 import {
 	LockOutlined,
 	UserOutlined,
 	VerifiedOutlined,
 } from '@ant-design/icons';
 import { Button, Checkbox, Col, Form, Input, Row, message } from 'antd';
+import Cookies from 'js-cookie';
 import styles from './index.less';
 import { captcha, login } from '@/services/login';
 
 // dva user连接
 const Login: React.FC<any> = (props) => {
-	console.log('<<< props', props);
 	const { dispatch } = props;
 	const loginClassName = `login-name ${styles.login}`;
 	const [captchaUrl, setCaptchaUrl] = useState('');
 	const [verifyKey, setVerifyKey] = useState('');
+	const navigate = useNavigate();
+
 	const onFinish = async (values: any) => {
 		const params = Object.assign(values, { verifyKey });
 		const res = await login(params);
+
 		if (res.code === 50) {
 			message.warning(res.message);
 		} else {
+			dispatch({
+				type: 'user/getUserInfo',
+				payload: res.data.userInfo,
+			});
+			dispatch({
+				type: 'user/getToken',
+				payload: res.data.token,
+			});
+			dispatch({
+				type: 'user/getMenuList',
+				payload: res.data.menuList,
+			});
+			Cookies.set('token', res.data.token);
+			Cookies.set('userInfo', JSON.stringify(res.data.userInfo));
+			navigate('/home');
 			message.success('登录成功');
 		}
-		dispatch({
-			type: 'user/getUserInfo',
-			payload: res.data.userInfo,
-		});
-		dispatch({
-			type: 'user/getToken',
-			payload: res.data.token,
-		});
-		dispatch({
-			type: 'user/getMenuList',
-			payload: res.data.menuList,
-		});
-		console.log('res==', res);
 	};
 
 	const getNewCaptcha = () => {
@@ -112,7 +117,6 @@ const Login: React.FC<any> = (props) => {
 	);
 };
 
-export default connect((state) => {
-	console.log('<<< state', state);
-	return state;
+export default connect(({ user }: any) => {
+	return user;
 })(Login);

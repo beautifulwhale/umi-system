@@ -20,7 +20,8 @@
     "@umijs/max": "^4.0.62",
     "antd": "^5.0.0",
     "cross-env": "^7.0.3",
-    "dva-model-extend": "^0.1.2"
+    "dva-model-extend": "^0.1.2",
+    "js-cookie": "^3.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
