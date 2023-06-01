@@ -10,7 +10,9 @@ import styles from './index.less';
 import { captcha, login } from '@/services/login';
 
 // dva user连接
-const Login: React.FC<any> = ({ dispatch }) => {
+const Login: React.FC<any> = (props) => {
+	console.log('<<< props', props);
+	const { dispatch } = props;
 	const loginClassName = `login-name ${styles.login}`;
 	const [captchaUrl, setCaptchaUrl] = useState('');
 	const [verifyKey, setVerifyKey] = useState('');
@@ -110,4 +112,7 @@ const Login: React.FC<any> = ({ dispatch }) => {
 	);
 };
 
-export default connect(({ user }) => ({ user }))(Login);
+export default connect((state) => {
+	console.log('<<< state', state);
+	return state;
+})(Login);
