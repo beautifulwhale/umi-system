@@ -16,7 +16,7 @@ export const layout: RunTimeLayoutConfig = () => {
 		menu: {
 			locale: true,
 		},
-		title: 'There is a girl named Siyu',
+		title: '听孙燕姿的Jay',
 	};
 };
 

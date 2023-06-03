@@ -5,50 +5,19 @@ import { connect } from '@umijs/max';
 
 const { Search } = Input;
 
-const x = 3;
-const y = 2;
-const z = 1;
-const defaultData: DataNode[] = [];
 
-const generateData = (
-	_level: number,
-	_preKey?: React.Key,
-	_tns?: DataNode[],
-) => {
-	const preKey = _preKey || '0';
-	const tns = _tns || defaultData;
-
-	const children: React.Key[] = [];
-	for (let i = 0; i < x; i++) {
-		const key = `${preKey}-${i}`;
-		tns.push({ title: key, key });
-		if (i < y) {
-			children.push(key);
-		}
-	}
-	if (_level < 0) {
-		return tns;
-	}
-	const level = _level - 1;
-	children.forEach((key, index) => {
-		tns[index].children = [];
-		return generateData(level, key, tns[index].children);
-	});
-};
-generateData(z);
-
-const dataList: { key: React.Key; title: string }[] = [];
-const generateList = (data: DataNode[]) => {
+const dataList: { key: string; title: string }[] = [];
+const generateList = (data: any[]) => {
 	for (let i = 0; i < data.length; i++) {
 		const node = data[i];
-		const { key } = node;
-		dataList.push({ key, title: key as string });
+		const { key, title } = node;
+		dataList.push({ key, title});
+    
 		if (node.children) {
 			generateList(node.children);
 		}
 	}
 };
-generateList(defaultData);
 
 const getParentKey = (key: React.Key, tree: DataNode[]): React.Key => {
 	let parentKey: React.Key;
@@ -66,11 +35,29 @@ const getParentKey = (key: React.Key, tree: DataNode[]): React.Key => {
 };
 
 const TreeDeps: React.FC<any> = ({ depsList }) => {
-	console.log('depsList>>>>>', depsList);
-
 	const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [autoExpandParent, setAutoExpandParent] = useState(true);
+
+	function mapDepartments(departments) {
+		return departments.map((item) => {
+			const mappedItem: any = {
+				title: item.deptName,
+				key: item.deptId,
+			};
+
+			if (item.children && item.children.length > 0) {
+				mappedItem.children = mapDepartments(item.children);
+			}
+
+			return mappedItem;
+		});
+	}
+
+	const realDepsList = mapDepartments(depsList);
+	console.log('reallist', realDepsList);
+
+	generateList(realDepsList);
 
 	const onExpand = (newExpandedKeys: React.Key[]) => {
 		setExpandedKeys(newExpandedKeys);
@@ -82,11 +69,12 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 		const newExpandedKeys = dataList
 			.map((item) => {
 				if (item.title.indexOf(value) > -1) {
-					return getParentKey(item.key, defaultData);
+					return getParentKey(item.key, realDepsList);
 				}
 				return null;
 			})
 			.filter((item, i, self) => item && self.indexOf(item) === i);
+    
 		setExpandedKeys(newExpandedKeys as React.Key[]);
 		setSearchValue(value);
 		setAutoExpandParent(true);
@@ -103,7 +91,12 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 					index > -1 ? (
 						<span>
 							{beforeStr}
-							<span className="site-tree-search-value">{searchValue}</span>
+							<span
+								className="site-tree-search-value"
+								style={{ backgroundColor: '#F1D4E5' }}
+							>
+								{searchValue}
+							</span>
 							{afterStr}
 						</span>
 					) : (
@@ -119,7 +112,7 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 				};
 			});
 
-		return loop(defaultData);
+		return loop(realDepsList);
 	}, [searchValue]);
 
 	return (
@@ -139,4 +132,4 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 	);
 };
 
-export default connect(({ userList }: any) => (userList))(TreeDeps);
+export default connect(({ userList }: any) => userList)(TreeDeps);

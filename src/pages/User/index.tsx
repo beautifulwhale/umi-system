@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 import React, { useEffect } from 'react';
-import Tree from './tree';
+import TreeDeps from './tree';
 import { useDispatch } from '@umijs/max';
 
 const UserManger: React.FC = () => {
@@ -27,13 +27,13 @@ const UserManger: React.FC = () => {
 		};
 
 		getDepsList();
-	}, []);
+	}, []);	
 
 	return (
 		<>
 			<Card style={{ height: '100vh' }}>
 				<Card.Grid style={gridStyle}>
-					<Tree />
+					<TreeDeps />
 				</Card.Grid>
 				<Card.Grid style={listStyle}>
 					<ul>
