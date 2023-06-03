@@ -1,18 +1,17 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Input, Tree } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { connect } from '@umijs/max';
 
 const { Search } = Input;
 
-
 const dataList: { key: string; title: string }[] = [];
 const generateList = (data: any[]) => {
 	for (let i = 0; i < data.length; i++) {
 		const node = data[i];
 		const { key, title } = node;
-		dataList.push({ key, title});
-    
+		dataList.push({ key, title });
+
 		if (node.children) {
 			generateList(node.children);
 		}
@@ -38,6 +37,7 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 	const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [autoExpandParent, setAutoExpandParent] = useState(true);
+	const [realDepsList, setRealDepsList] = useState([]);
 
 	function mapDepartments(departments) {
 		return departments.map((item) => {
@@ -54,10 +54,13 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 		});
 	}
 
-	const realDepsList = mapDepartments(depsList);
-	console.log('reallist', realDepsList);
-
-	generateList(realDepsList);
+	useEffect(() => {
+		if (depsList.length > 0) {
+			const list = mapDepartments(depsList);
+			setRealDepsList(list);
+			generateList(list);
+		}
+	}, [depsList]);
 
 	const onExpand = (newExpandedKeys: React.Key[]) => {
 		setExpandedKeys(newExpandedKeys);
@@ -74,7 +77,7 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 				return null;
 			})
 			.filter((item, i, self) => item && self.indexOf(item) === i);
-    
+
 		setExpandedKeys(newExpandedKeys as React.Key[]);
 		setSearchValue(value);
 		setAutoExpandParent(true);
@@ -113,7 +116,7 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 			});
 
 		return loop(realDepsList);
-	}, [searchValue]);
+	}, [searchValue, realDepsList]);
 
 	return (
 		<div>
