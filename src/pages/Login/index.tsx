@@ -10,7 +10,6 @@ import Cookies from 'js-cookie';
 import styles from './index.less';
 import { captcha, login } from '@/services/login';
 
-// dva user连接
 const Login: React.FC<any> = (props) => {
 	const { dispatch } = props;
 	const loginClassName = `login-name ${styles.login}`;

@@ -1,5 +1,7 @@
 import { Card } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
+import Tree from './tree';
+import { useDispatch } from '@umijs/max';
 
 const UserManger: React.FC = () => {
 	const gridStyle: React.CSSProperties = {
@@ -14,10 +16,25 @@ const UserManger: React.FC = () => {
 		textAlign: 'center',
 	};
 
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		// 获取部分树
+		const getDepsList = async () => {
+			await dispatch({
+				type: 'userList/getDeps',
+			});
+		};
+
+		getDepsList();
+	}, []);
+
 	return (
 		<>
 			<Card style={{ height: '100vh' }}>
-				<Card.Grid style={gridStyle}>这部分是搜索的</Card.Grid>
+				<Card.Grid style={gridStyle}>
+					<Tree />
+				</Card.Grid>
 				<Card.Grid style={listStyle}>
 					<ul>
 						<li>这部分是列表的</li>

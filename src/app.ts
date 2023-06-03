@@ -21,7 +21,7 @@ export const layout: RunTimeLayoutConfig = () => {
 };
 
 const DEFAULT_REQUEST_TIMEOUT_TIME = 3000;
-const token = window.localStorage.getItem('token');
+const token = Cookies.get('token')
 const codeMessage = {
 	400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
 	401: '用户没有权限（令牌、用户名、密码错误）。',
