@@ -33,7 +33,7 @@ const getParentKey = (key: React.Key, tree: DataNode[]): React.Key => {
 	return parentKey!;
 };
 
-const TreeDeps: React.FC<any> = ({ depsList }) => {
+const TreeDeps: React.FC<any> = ({ depsList, getDeptId }) => {
 	const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [autoExpandParent, setAutoExpandParent] = useState(true);
@@ -83,6 +83,10 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 		setAutoExpandParent(true);
 	};
 
+	const onSelectTree = (selectKeys: any) => {
+		getDeptId(selectKeys[0])
+	};
+
 	const treeData = useMemo(() => {
 		const loop = (data: DataNode[]): DataNode[] =>
 			data.map((item) => {
@@ -130,6 +134,7 @@ const TreeDeps: React.FC<any> = ({ depsList }) => {
 				expandedKeys={expandedKeys}
 				autoExpandParent={autoExpandParent}
 				treeData={treeData}
+				onSelect={onSelectTree}
 			/>
 		</div>
 	);

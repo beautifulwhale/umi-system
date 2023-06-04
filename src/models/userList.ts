@@ -1,4 +1,4 @@
-import { depsTree } from '@/services';
+import { depsTree, userList } from '@/services';
 
 // 用户管理
 export default {
@@ -32,6 +32,11 @@ export default {
 		*getDeps(_, { put, call }) {
 			const res = yield call(depsTree);
 			yield put({ type: 'getDepsList', payload: res.data.deps });
+		},
+		*getUserLists({ payload }, { put, call }) {
+			const res = yield call(userList, payload);
+			yield put({ type: 'getUserList', payload: res.data.userList });
+			yield put({ type: 'getTotal', payload: res.data.total });
 		},
 	},
 };

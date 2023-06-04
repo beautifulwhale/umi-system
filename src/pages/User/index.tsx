@@ -1,7 +1,8 @@
 import { Card } from 'antd';
-import React, { useEffect } from 'react';
-import TreeDeps from './tree';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from '@umijs/max';
+import TreeDeps from './tree';
+import UserList from './userList';
 
 const UserManger: React.FC = () => {
 	const gridStyle: React.CSSProperties = {
@@ -15,6 +16,7 @@ const UserManger: React.FC = () => {
 		marginLeft: '20px',
 		textAlign: 'center',
 	};
+	const [deptId, setDeptId] = useState('');
 
 	const dispatch = useDispatch();
 
@@ -25,26 +27,21 @@ const UserManger: React.FC = () => {
 				type: 'userList/getDeps',
 			});
 		};
-
 		getDepsList();
-	}, []);	
+	}, []);
+
+	const getDeptId = (id: string) => {
+		setDeptId(id);
+	};
 
 	return (
 		<>
 			<Card style={{ height: '100vh' }}>
 				<Card.Grid style={gridStyle}>
-					<TreeDeps />
+					<TreeDeps getDeptId={getDeptId} />
 				</Card.Grid>
 				<Card.Grid style={listStyle}>
-					<ul>
-						<li>这部分是列表的</li>
-						<li>这部分是列表的</li>
-						<li>这部分是列表的</li>
-						<li>这部分是列表的</li>
-						<li>这部分是列表的</li>
-						<li>这部分是列表的</li>
-						<li>这部分是列表的</li>
-					</ul>
+					<UserList deptId={deptId}></UserList>
 				</Card.Grid>
 			</Card>
 		</>

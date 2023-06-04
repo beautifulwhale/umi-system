@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import EditTable from './editTable'
+import VirtualTables from './virtualTable'
 
 // use css 没有作用域 互相影响
 import './index.css';
@@ -22,6 +24,8 @@ export default () => {
 				<div className={styles.child}></div>
 			</div>
 			<div className="bg-red-300 w-5 h-5"></div>
+			<EditTable />
+			<VirtualTables />
 		</>
 	);
 };
