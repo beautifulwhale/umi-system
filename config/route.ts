@@ -58,4 +58,10 @@ export const routes = [
 		extra: true,
 		component: './User',
 	},
+	{
+		name: 'hook练习',
+		path: '/test/hooks',
+		extra: true,
+		component: './Hooks'
+	}
 ];
