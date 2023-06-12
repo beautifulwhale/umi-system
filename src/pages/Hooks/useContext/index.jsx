@@ -115,6 +115,29 @@ export default function UseContextTest() {
 			<div style={{ marginTop: '20px' }}>
 				<Button onClick={() => { setTheme(theme === 'dark' ? 'light' : 'dark') }}>Toggle Theme</Button>
 			</div>
+			<MyComponent />
 		</>
+	);
+}
+
+
+function MyComponent() {
+	const initialState = [1, 2];
+	const [state, setState] = useState(initialState);
+	const [count, setCount] = useState(initialState)
+	console.log(state); // 第一次渲染: [1, 2]
+	console.log(count);
+	console.log('equal --?,', state === count);
+
+	const handleClick = () => {
+		setState([3, 4]);
+	};
+
+	return (
+		<div>
+			<p>{state[0]}, {state[1]}</p> {/* 渲染: 1, 2 */}
+			<span>count: {count[1]} ---- {count[2]}</span>
+			<button type='button' onClick={handleClick}>Update State</button>
+		</div>
 	);
 }
