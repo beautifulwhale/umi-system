@@ -63,5 +63,17 @@ export const routes = [
 		path: '/test/hooks',
 		extra: true,
 		component: './Hooks'
-	}
+	},
+	{
+		name: 'jsx练习',
+		path: '/test/jsx',
+		extra: true,
+		component: './JSX'
+	},
+	{
+		name: 'MyForm练习',
+		path: '/test/myForm',
+		extra: true,
+		component: './myForm'
+	},
 ];
