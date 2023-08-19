@@ -1,4 +1,5 @@
 import React, { Children, forwardRef, useImperativeHandle, useState } from 'react'
+import Hoc from './hoc'
 
 export default () => {
   const form = React.useRef(null)
@@ -12,7 +13,8 @@ export default () => {
     /* 表单重置 */
     form.current.resetForm()
   }
-  return <div className='box' >
+  return <>
+  <div className='box' >
     <Form ref={form} >
       <FormItem name="name" label="我是"  >
         <Input />
@@ -28,6 +30,10 @@ export default () => {
       <button className="concellbtn" onClick={reset} >重置</button>
     </div>
   </div>
+  <br />
+
+  {/* <Hoc /> */}
+  </>
 }
 
 

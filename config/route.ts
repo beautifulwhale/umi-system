@@ -76,4 +76,10 @@ export const routes = [
 		extra: true,
 		component: './myForm'
 	},
+	{
+		name: 'VirtualForm',
+		path: '/virtual/form',
+		extra: true,
+		component: './virtualForm'
+	},
 ];
