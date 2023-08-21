@@ -82,4 +82,10 @@ export const routes = [
 		extra: true,
 		component: './virtualForm'
 	},
+	{
+		name: 'miniRouter',
+		path: '/mini/router',
+		extra: true,
+		component: './miniRouter/test'
+	},
 ];

@@ -40,7 +40,7 @@
     "externals.d.ts",
     "typings.d.ts",
     "**/*.ts",
-    "**/*.tsx", "src/pages/Hooks/useContext/index.jsx", "src/pages/User/animation.jsx",
+    "**/*.tsx", "src/pages/Hooks/useContext/index.jsx", "src/pages/User/animation.jsx", "src/pages/miniRouter/index.jsx", "src/pages/miniRouter/router.jsx",
   ],
   "exclude": [
     "node_modules"

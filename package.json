@@ -21,7 +21,9 @@
     "antd": "^5.0.0",
     "cross-env": "^7.0.3",
     "dva-model-extend": "^0.1.2",
+    "hoist-non-react-statics": "^3.3.2",
     "js-cookie": "^3.0.5",
+    "react-router": "^6.15.0",
     "react-window": "^1.8.9"
   },
   "devDependencies": {
